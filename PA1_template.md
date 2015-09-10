@@ -6,13 +6,12 @@ output:
 ---
 
 ## Ng Peng Hong
-  ```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
-library(lattice)
-```
+
 
 ##Loading and preprocessing the data
 ##### 1. Load the data (i.e. read.csv()) & 2. Process/transform the data (if necessary) into a format suitable for your analysis
-```{r, results='markup', warning=TRUE, message=TRUE}
+
+```r
 if (!file.exists("activity.csv")) {
   unzip("activity.zip")
 }
@@ -21,83 +20,99 @@ activity <- read.csv("activity.csv", colClass=c('integer', 'Date', 'integer'))
 
 ##What is mean total number of steps taken per day?
 ##### 1. Make a histogram of the total number of steps taken each day
-```{r}
+
+```r
 totsteps <- aggregate(steps ~ date, activity, sum)
 hist(totsteps$steps,main= "Histogram of Total Number of Steps Taken Each Day",xlab= "Total Steps Each Day",col="Grey")
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
 ##### 2. Calculate and report the mean and median total number of steps taken per day
-```{r}
+
+```r
 totstepsmean <- mean(totsteps$steps)
 totstepsmedian <- median(totsteps$steps)
 ```
-* Mean: `r totstepsmean`
-* Median:  `r totstepsmedian`
+* Mean: 1.0766189 &times; 10<sup>4</sup>
+* Median:  10765
 
 ----
   
   ##What is the average daily activity pattern?
   ##### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-  ```{r}
-intsteps <- aggregate(steps ~ interval, activity, mean)
-plot(intsteps, xlab = "Intervals from 0 to 2355", ylab = "Steps", type = "l", main = "Mean Number of Steps by Interval",col="Blue")
-```
+  
+  ```r
+  intsteps <- aggregate(steps ~ interval, activity, mean)
+  plot(intsteps, xlab = "Intervals from 0 to 2355", ylab = "Steps", type = "l", main = "Mean Number of Steps by Interval",col="Blue")
+  ```
+  
+  ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
 ##### 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
-```{r}
+
+```r
 maxintsteps <- intsteps$interval[which.max(intsteps$steps)]
 ```
-* Max number of steps at interval: `r maxintsteps`
+* Max number of steps at interval: 835
 
 ----
   
   ##Imputting missing values
   ##### 1. Calculate and report the total number of missing values in the dataset 
-  ```{r}
-missingval <- sum(is.na(activity))
-```
+  
+  ```r
+  missingval <- sum(is.na(activity))
+  ```
 
-* Number of missing values in the dataset: `r missingval`
+* Number of missing values in the dataset: 2304
 
 ##### 2. Devise a strategy for filling in all of the missing values in the dataset.
 #####The strategy for filling in all of the missing values in the dataset is to use mean of the interval.
-```{r}
+
+```r
 mean_interval <- tapply(activity$steps, activity$interval, mean, na.rm=TRUE, simplify=TRUE)
 ```
 
 
 ##### 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
-```{r}
+
+```r
 activity_complete <- activity
 nas <- is.na(activity_complete$steps)
 activity_complete$steps[nas] <- mean_interval[as.character(activity_complete$interval[nas])]
 ```
 
 ##### 4. Make a histogram of the total number of steps taken each day 
-```{r}
+
+```r
 totstepscomplete <- aggregate(steps ~ date,activity_complete,sum)
 
 hist(totstepscomplete$steps,main= "Histogram of Total Number of Steps Taken Each Day 
      (missing values replaced with mean of interval)",xlab= "Total Steps Each Day",col="Yellow")
 ```
 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+
 ##### Calculate and report the mean and median total number of steps taken per day.
-```{r}
+
+```r
 comptotstepsmean <- mean(totstepscomplete$steps)
 comptotstepsmedian <- median(totstepscomplete$steps)
 ```
 
-* Mean (Imputted): `r comptotstepsmean`
-* Median (Imputted):  `r comptotstepsmedian`
+* Mean (Imputted): 1.0766189 &times; 10<sup>4</sup>
+* Median (Imputted):  1.0766189 &times; 10<sup>4</sup>
 
 #### Do these values differ from the estimates from the first part of the assignment?
-```{r}
+
+```r
 meandiff <- mean(totstepscomplete$steps)-mean(totsteps$steps)
 mediandiff <- median(totstepscomplete$steps)-median(totsteps$steps)
 ```
 
-* Mean (Differences): `r meandiff`
-* Median (Differences):  `r mediandiff`
+* Mean (Differences): 0
+* Median (Differences):  1.1886792
 
 #### What is the impact of imputing missing data on the estimates of the total daily number of steps?
 #####The impact of inputting missing data is minimal as result shown that only the median differ by just over one step.
@@ -106,15 +121,19 @@ mediandiff <- median(totstepscomplete$steps)-median(totsteps$steps)
   
   ##Are there differences in activity patterns between weekdays and weekends?
   ##### 1.Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day
-  ```{r}
-activity_complete$days <- weekdays(activity_complete$date)
-activity_complete$wd_we <-as.factor(c("Weekday","Weekend"))
-activity_complete[activity_complete$days == "Sunday" | activity_complete$days == "Saturday" ,5]<- factor("Weekend")
-activity_complete[!(activity_complete$days == "Sunday" | activity_complete$days == "Saturday"),5 ]<- factor("Weekday")
-```
+  
+  ```r
+  activity_complete$days <- weekdays(activity_complete$date)
+  activity_complete$wd_we <-as.factor(c("Weekday","Weekend"))
+  activity_complete[activity_complete$days == "Sunday" | activity_complete$days == "Saturday" ,5]<- factor("Weekend")
+  activity_complete[!(activity_complete$days == "Sunday" | activity_complete$days == "Saturday"),5 ]<- factor("Weekday")
+  ```
 
 ##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
-```{r}
+
+```r
 intstepscomplete <- aggregate(steps ~ interval + wd_we, activity_complete, mean)
 xyplot(steps ~ interval | wd_we, intstepscomplete, layout=c(1,2), type='l')
 ```
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
