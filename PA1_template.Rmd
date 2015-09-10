@@ -6,7 +6,7 @@ output:
 ---
 
 ## Ng Peng Hong
-  ```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
 library(lattice)
 ```
 
@@ -36,9 +36,9 @@ totstepsmedian <- median(totsteps$steps)
 
 ----
   
-  ##What is the average daily activity pattern?
-  ##### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-  ```{r}
+##What is the average daily activity pattern?
+##### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+```{r}
 intsteps <- aggregate(steps ~ interval, activity, mean)
 plot(intsteps, xlab = "Intervals from 0 to 2355", ylab = "Steps", type = "l", main = "Mean Number of Steps by Interval",col="Blue")
 ```
@@ -51,9 +51,9 @@ maxintsteps <- intsteps$interval[which.max(intsteps$steps)]
 
 ----
   
-  ##Imputting missing values
-  ##### 1. Calculate and report the total number of missing values in the dataset 
-  ```{r}
+##Imputting missing values
+##### 1. Calculate and report the total number of missing values in the dataset 
+```{r}
 missingval <- sum(is.na(activity))
 ```
 
@@ -104,9 +104,9 @@ mediandiff <- median(totstepscomplete$steps)-median(totsteps$steps)
 
 ----
   
-  ##Are there differences in activity patterns between weekdays and weekends?
-  ##### 1.Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day
-  ```{r}
+##Are there differences in activity patterns between weekdays and weekends?
+##### 1.Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day
+```{r}
 activity_complete$days <- weekdays(activity_complete$date)
 activity_complete$wd_we <-as.factor(c("Weekday","Weekend"))
 activity_complete[activity_complete$days == "Sunday" | activity_complete$days == "Saturday" ,5]<- factor("Weekend")

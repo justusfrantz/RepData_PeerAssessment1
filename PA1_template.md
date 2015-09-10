@@ -39,15 +39,15 @@ totstepsmedian <- median(totsteps$steps)
 
 ----
   
-  ##What is the average daily activity pattern?
-  ##### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-  
-  ```r
-  intsteps <- aggregate(steps ~ interval, activity, mean)
-  plot(intsteps, xlab = "Intervals from 0 to 2355", ylab = "Steps", type = "l", main = "Mean Number of Steps by Interval",col="Blue")
-  ```
-  
-  ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+##What is the average daily activity pattern?
+##### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+
+```r
+intsteps <- aggregate(steps ~ interval, activity, mean)
+plot(intsteps, xlab = "Intervals from 0 to 2355", ylab = "Steps", type = "l", main = "Mean Number of Steps by Interval",col="Blue")
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
 ##### 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -58,12 +58,12 @@ maxintsteps <- intsteps$interval[which.max(intsteps$steps)]
 
 ----
   
-  ##Imputting missing values
-  ##### 1. Calculate and report the total number of missing values in the dataset 
-  
-  ```r
-  missingval <- sum(is.na(activity))
-  ```
+##Imputting missing values
+##### 1. Calculate and report the total number of missing values in the dataset 
+
+```r
+missingval <- sum(is.na(activity))
+```
 
 * Number of missing values in the dataset: 2304
 
@@ -119,15 +119,15 @@ mediandiff <- median(totstepscomplete$steps)-median(totsteps$steps)
 
 ----
   
-  ##Are there differences in activity patterns between weekdays and weekends?
-  ##### 1.Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day
-  
-  ```r
-  activity_complete$days <- weekdays(activity_complete$date)
-  activity_complete$wd_we <-as.factor(c("Weekday","Weekend"))
-  activity_complete[activity_complete$days == "Sunday" | activity_complete$days == "Saturday" ,5]<- factor("Weekend")
-  activity_complete[!(activity_complete$days == "Sunday" | activity_complete$days == "Saturday"),5 ]<- factor("Weekday")
-  ```
+##Are there differences in activity patterns between weekdays and weekends?
+##### 1.Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day
+
+```r
+activity_complete$days <- weekdays(activity_complete$date)
+activity_complete$wd_we <-as.factor(c("Weekday","Weekend"))
+activity_complete[activity_complete$days == "Sunday" | activity_complete$days == "Saturday" ,5]<- factor("Weekend")
+activity_complete[!(activity_complete$days == "Sunday" | activity_complete$days == "Saturday"),5 ]<- factor("Weekday")
+```
 
 ##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 

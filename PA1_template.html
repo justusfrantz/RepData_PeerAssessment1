@@ -236,11 +236,12 @@ totstepsmedian &lt;- median(totsteps$steps)
 
 <hr/>
 
-<p>##What is the average daily activity pattern?
-  ##### 1. Make a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)</p>
+<p>##What is the average daily activity pattern?</p>
 
-<pre><code class="r">  intsteps &lt;- aggregate(steps ~ interval, activity, mean)
-  plot(intsteps, xlab = &quot;Intervals from 0 to 2355&quot;, ylab = &quot;Steps&quot;, type = &quot;l&quot;, main = &quot;Mean Number of Steps by Interval&quot;,col=&quot;Blue&quot;)
+<h5>1. Make a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)</h5>
+
+<pre><code class="r">intsteps &lt;- aggregate(steps ~ interval, activity, mean)
+plot(intsteps, xlab = &quot;Intervals from 0 to 2355&quot;, ylab = &quot;Steps&quot;, type = &quot;l&quot;, main = &quot;Mean Number of Steps by Interval&quot;,col=&quot;Blue&quot;)
 </code></pre>
 
 <p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-5"/> </p>
@@ -256,10 +257,11 @@ totstepsmedian &lt;- median(totsteps$steps)
 
 <hr/>
 
-<p>##Imputting missing values
-  ##### 1. Calculate and report the total number of missing values in the dataset </p>
+<p>##Imputting missing values</p>
 
-<pre><code class="r">  missingval &lt;- sum(is.na(activity))
+<h5>1. Calculate and report the total number of missing values in the dataset</h5>
+
+<pre><code class="r">missingval &lt;- sum(is.na(activity))
 </code></pre>
 
 <ul>
@@ -318,13 +320,14 @@ mediandiff &lt;- median(totstepscomplete$steps)-median(totsteps$steps)
 
 <hr/>
 
-<p>##Are there differences in activity patterns between weekdays and weekends?
-  ##### 1.Create a new factor variable in the dataset with two levels &ndash; &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo; indicating whether a given date is a weekday or weekend day</p>
+<p>##Are there differences in activity patterns between weekdays and weekends?</p>
 
-<pre><code class="r">  activity_complete$days &lt;- weekdays(activity_complete$date)
-  activity_complete$wd_we &lt;-as.factor(c(&quot;Weekday&quot;,&quot;Weekend&quot;))
-  activity_complete[activity_complete$days == &quot;Sunday&quot; | activity_complete$days == &quot;Saturday&quot; ,5]&lt;- factor(&quot;Weekend&quot;)
-  activity_complete[!(activity_complete$days == &quot;Sunday&quot; | activity_complete$days == &quot;Saturday&quot;),5 ]&lt;- factor(&quot;Weekday&quot;)
+<h5>1.Create a new factor variable in the dataset with two levels &ndash; &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo; indicating whether a given date is a weekday or weekend day</h5>
+
+<pre><code class="r">activity_complete$days &lt;- weekdays(activity_complete$date)
+activity_complete$wd_we &lt;-as.factor(c(&quot;Weekday&quot;,&quot;Weekend&quot;))
+activity_complete[activity_complete$days == &quot;Sunday&quot; | activity_complete$days == &quot;Saturday&quot; ,5]&lt;- factor(&quot;Weekend&quot;)
+activity_complete[!(activity_complete$days == &quot;Sunday&quot; | activity_complete$days == &quot;Saturday&quot;),5 ]&lt;- factor(&quot;Weekday&quot;)
 </code></pre>
 
 <h5>2. Make a panel plot containing a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).</h5>
